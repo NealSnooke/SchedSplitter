@@ -1,0 +1,104 @@
+.root {
+	-fx-background-color: #AFD8F3;
+	-fx-padding: 0;
+}
+
+#resultsLabel {
+	-fx-padding: 5;
+}
+
+#logLabel {
+	-fx-padding: 5;
+}
+
+.tab-pane *.tab-header-background {
+    -fx-background-color: -fx-outer-border, -fx-inner-border, derive(#AFD8F3, -20%);
+    -fx-effect: innershadow(two-pass-box , rgba(0,0,0,0.6) , 4, 0.0 , 0 , 0);
+}
+
+
+#settingsPane {
+	-fx-padding: 10;
+}
+
+#FileHbox {
+	-fx-padding: 10.0 0.0 20.0 0.0;
+}
+
+#GoHbox {
+	-fx-padding: 10.0 0.0 20.0 0.0;
+}
+
+#runButton {
+	-fx-background-color: #36CF22;
+	-fx-border-color: #000000;
+	-fx-border-width: 1;
+	-fx-background-radius: 3px;	
+	-fx-border-radius: 3;
+}
+
+#runButton:hover {
+	-fx-background-color: #54DE43;
+}
+
+#runButton:armed {
+	-fx-background-color: #00FF00;
+}
+#fileName {
+	-fx-min-width: 400; -fx-max-width: 400;
+}
+
+#latCol {
+	-fx-min-width: 40; -fx-max-width: 40;
+}
+#lngCol {
+	-fx-min-width: 40; -fx-max-width: 40;
+}
+#dateCol {
+	-fx-min-width: 40; -fx-max-width: 40;
+}
+#timeCol {
+	-fx-min-width: 40; -fx-max-width: 40;
+}
+
+#intervalLower {
+	-fx-min-width: 60; -fx-max-width: 60;
+}
+#intervalHigher {
+	-fx-min-width: 80; -fx-max-width: 80;
+}
+
+#startDate {
+	-fx-min-width: 90; -fx-max-width: 90;
+}
+#endDate {
+	-fx-min-width: 90; -fx-max-width: 90;
+}
+#startTime {
+	-fx-min-width: 90; -fx-max-width: 90;
+}
+#endTime {
+	-fx-min-width: 90; -fx-max-width: 90;
+}
+
+#timeOffsetTextField {
+	-fx-min-width: 60; -fx-max-width: 60;
+}
+
+
+.text-input:error {
+    -fx-focus-color: #d35244;
+    -fx-faint-focus-color: #d3524422;
+
+    -fx-highlight-fill: -fx-accent;
+    -fx-highlight-text-fill: white;
+    -fx-background-color:
+        -fx-focus-color,
+        -fx-control-inner-background,
+        -fx-faint-focus-color,
+        linear-gradient(from 0px 0px to 0px 5px, derive(-fx-control-inner-background, -9%), -fx-control-inner-background);
+    -fx-background-insets: -0.2, 1, -1.4, 3;
+    -fx-background-radius: 3, 2, 4, 0;
+    -fx-prompt-text-fill: transparent;
+}
+

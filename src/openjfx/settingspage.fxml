@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.geometry.*?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.CheckBox?>
+
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.collections.*?>
+<?import java.lang.*?>
+
+<BorderPane fx:id="settingsPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" 
+	
+	xmlns="http://javafx.com/javafx/8" 
+	xmlns:fx="http://javafx.com/fxml/1" 
+	
+	fx:controller="openjfx.SettingsTabController">
+	
+	<!-- prefHeight="400.0" prefWidth="600.0" --> 
+	
+	<bottom>
+		<Label fx:id="label" text="Label" 
+			style=" -fx-border-color:grey; -fx-border-width: 1; -fx-border-style: solid;"/>
+	</bottom>
+	
+	<top>
+        <HBox id="FileHbox" alignment="CENTER_LEFT" spacing="10.0">                    	
+            <children>    	
+                <Label text="Folder/File(s):"/>
+                <TextField fx:id="fileName"/>
+                <Button fx:id="fileButton" text="Browse"/>                       
+            </children>
+        </HBox>  
+    </top>
+    
+    <center>
+     	<VBox id="MainItems" alignment="TOP_LEFT" spacing="10.0">
+     	
+     	<Separator/>   
+     	 
+     	<children>
+     		<Label text="Input File Format" />
+     		
+     		<HBox id="InputSeperatorFormat" alignment="CENTER_LEFT" spacing="5.0">
+	            <children>        		                
+	                <Label text="Separator type"/> 	 
+	                
+	                <ComboBox fx:id="separatorSelector" layoutX="15.0" layoutY="33.0" prefWidth="100.0" 
+	                	promptText="comma">
+					      <items>
+					        <FXCollections fx:factory="observableArrayList">
+					        	<String fx:value="comma" />
+					        	<String fx:value="space" />
+					            <String fx:value="tab" />
+					        </FXCollections>
+					      </items>					    
+					</ComboBox>                    
+	            </children>
+	        </HBox>
+     	
+	    	<HBox id="FileFormatHbox" alignment="CENTER_LEFT" spacing="5.0">
+	            <children>        	
+	                <Label text="Latitude column"/>
+	                <TextField fx:id="latCol" text="1"/> 
+	                 
+					<Label text="Longitude column"/>
+	                <TextField fx:id="lngCol"  text="2"/>  
+	                
+	                <Label text="Date(Date-Time) column" />
+	                <TextField fx:id="dateCol" text="3"/>  
+	                
+					<Label text="Time column" />
+	                <TextField fx:id="timeCol" text="4"/>                    
+	            </children>
+	        </HBox>
+	        
+	        <HBox id="DateTimeHbox" alignment="CENTER_LEFT" spacing="5.0">
+	            <children>        
+	            
+	            	<Label text="Date/Time Format"/>
+	                <TextField fx:id="dateTimeFormat" text="d/M/y H:m:s xxx"/> 
+	                
+	                <ComboBox fx:id="dateSelector" layoutX="15.0" layoutY="33.0" prefWidth="250.0" 
+	                	promptText="Other common formats">
+					      <items>
+					        <FXCollections fx:factory="observableArrayList">
+					        	<String fx:value="31/12/2000 23:59:59 +00:00" />
+					        	<String fx:value="12/31/2000 23:59:59 +00:00" />
+					          	<String fx:value="31.12.2000 23:59:59 +00:00" />
+					          	<String fx:value="31-12-2000 23:59:59 +00:00" />
+					          	<String fx:value="2000-12-31 23:59:59 +00:00" />
+					            <String fx:value="23:59:59 +00:00 31/12/2000 " />
+					            <String fx:value="custom format search 'DateTimeFormatter Java SE'" />
+					        </FXCollections>
+					      </items>					    
+					</ComboBox>
+					
+	            </children>
+	        </HBox>
+	        
+	        <HBox id="DateTimeHbox" alignment="CENTER_LEFT" spacing="5.0">
+	       	 	
+	       	 	<CheckBox fx:id="timeOffsetCheckbox"/>
+	       	 	<Label text="Append time zone "/>
+	            <TextField fx:id="timeOffsetTextField" text="+00:00"/> 
+	            <Label text="(required if not included in file data - 'xxx' format specifier)"/>
+	       	</HBox>  
+	       	 
+	       	<Separator/>
+	       	
+	       	<Label text="Output File Format" />
+	       	    
+	        <HBox id="DateTimeHbox" alignment="CENTER_LEFT" spacing="5.0">
+	       	 	
+	       	 	<CheckBox fx:id="outputISOTimeOffsetCheckbox"/>
+	       	 	<Label text="Output date/time in ISO standard format"/>	          
+	       	</HBox>  
+	       	
+	        <Separator/>
+	        
+	        <Label text="Time Interval Range (seconds)" />
+	        
+	        <HBox id="IntervalRange" alignment="CENTER_LEFT" spacing="5.0">
+	            <children>        	
+	                <Label text="Lower"/>
+	                <TextField fx:id="intervalLower" text="0"/>  
+	                
+					<Label text="Upper"/>
+	                <TextField fx:id="intervalHigher" text="86400"/>  	                                      
+	            </children>
+	        </HBox>
+	        
+	        <Separator/>
+	        
+	        <Label text="Date selection (Optional)" />
+	        <HBox id="IntervalRange" alignment="CENTER_LEFT" spacing="5.0">
+	            <children>        	
+	                <Label text="Start Date (d/M/y)"/>
+	                <TextField fx:id="startDate" /> 
+	                
+	                <Label text="End Date (d/M/y)"/>
+	                <TextField fx:id="endDate"/> 	                                
+	            </children>
+	        </HBox>
+	        
+	        <HBox id="IntervalRange" alignment="CENTER_LEFT" spacing="5.0">
+	            <children>   	                 	
+  	                <Label text="Start Time (H:m:s)"/>
+	                <TextField fx:id="startTime" />
+	                
+					<Label text="End Time (H:m:s)"/>
+	                <TextField fx:id="endTime"/>  	                                
+	            </children>
+	        </HBox>
+	        
+	        <Separator/>
+	        
+	        <HBox id="GoHbox" alignment="CENTER_LEFT" spacing="5.0">
+	            <children>        		                
+	                <Button fx:id="runButton" text="Process files"/> 
+	                <Label fx:id="runLabel"/> 	 
+	                
+	                <ComboBox fx:id="errorSelector" layoutX="15.0" layoutY="33.0" prefWidth="200.0" 
+	                	promptText="log: messages + errors">
+					      <items>
+					        <FXCollections fx:factory="observableArrayList">
+					        	<String fx:value="log: errors only" />
+					        	<String fx:value="log: messages + errors" />
+					            <String fx:value="log: debug" />
+					        </FXCollections>
+					      </items>					    
+					</ComboBox>                    
+	            </children>
+	        </HBox>
+	        
+        </children>
+        </VBox>
+    </center>
+    
+</BorderPane>
