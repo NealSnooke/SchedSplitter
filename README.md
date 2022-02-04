@@ -14,7 +14,7 @@ Building:
 =========
 
 The buildWin and buildMac scripts build the packaged application on the relevant platforms (assuming Java is installed).
-The system was built using OpenJdk 14.0.2.
+The system was built using OpenJDK 14.0.2.
 The javafx libraries need to be in a folder ./libraries. The current system was built and tested using the following versions of the JavaFx libraries:
 
 Windows
