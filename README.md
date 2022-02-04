@@ -17,10 +17,12 @@ The buildWin and buildMac scripts build the packaged application on the relevant
 The javafx libraries need to be in a folder ./libraries. The current system was built and tested using the following versions of the JavaFx libraries:
 
 Windows
+
 javafx-jmods-17.0.0.1
 javafx-sdk-17.0.0.1
 
 Mac
+
 javafx-jmods-11.0.2
 javafx-sdk-11.0.2
 
