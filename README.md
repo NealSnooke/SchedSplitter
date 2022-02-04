@@ -4,13 +4,25 @@ Simple tool to pre process csv data from a gps logger.
 Installation:
 =============
 
-Sched Splitter is a JavaFX application that reads csv file containing gps data obteined from tracking devices.
+Sched Splitter is a JavaFX application that reads csv file containing gps data obtained from tracking devices.
 
 The JRE packaged runtime version can be run using the runWin or runMac scripts.
 These simply run the packaged java runtime with the relevant class file:
 ./customjre/bin/java --module schedsplitter/openjfx.MainApp
 
-The buildWin and buildMac scripts build the packaged application on the relevant platforms (assuming Java is installed)
+Building:
+=========
+
+The buildWin and buildMac scripts build the packaged application on the relevant platforms (assuming Java is installed).
+The javafx libraries need to be in a folder ./libraries. The current system was built and tested using the following versions of the JavaFx libraries:
+
+Windows
+javafx-jmods-17.0.0.1
+javafx-sdk-17.0.0.1
+
+Mac
+javafx-jmods-11.0.2
+javafx-sdk-11.0.2
 
 Features:
 =========
