@@ -19,11 +19,13 @@ The javafx libraries need to be in a folder ./libraries. The current system was 
 Windows
 
 javafx-jmods-17.0.0.1
+
 javafx-sdk-17.0.0.1
 
 Mac
 
 javafx-jmods-11.0.2
+
 javafx-sdk-11.0.2
 
 Features:
