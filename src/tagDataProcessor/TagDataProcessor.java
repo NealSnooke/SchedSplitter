@@ -241,8 +241,8 @@ public class TagDataProcessor {
 				//System.out.println("Line: "+lineCount+ " "+line);
 
 				processDataline(line, separator, zdt_s, zdt_e, timeZone);
+				
 				line = br.readLine();
-
 				errhndlr.nextline();
 			}
 //xxx
@@ -272,8 +272,9 @@ public class TagDataProcessor {
 	}
 
 	/**
-	 * read the file, if possible
-	 * returns false is fails
+	 * read and parse a line from the file
+	 * any lines that do not contain gps data according to the specified format are dropped
+	 * any lines that fall outside the specifies dates/times are dropped
 	 * 
 	 * @param line
 	 * @param startDateTime - select only entries after this time, no restriction if null
@@ -432,7 +433,7 @@ public class TagDataProcessor {
 				
 				//add message and reset count
 				summaryOutput.append(zdt.toLocalDate().toString()+" \t"+dayItemCount+" items read"+"\n");	
-				dayItemCount = 0;
+				dayItemCount = 1;
 			}
 		}
 				
@@ -443,12 +444,29 @@ public class TagDataProcessor {
 	/**
 	 * 
 	 */
-	private void daySummary(TagDataItem previousItem, TagDataItem currentItem) {
-		//check if this is the same day as the previous item and increase the count if so
+	private void dayValidItem(TagDataItem previousItem, TagDataItem currentItem) {
+		// increase the valid items count for day
+		// output summary if same day as the previous item 
 		
-		//if dates match
 		dayItemCount++;
 		
+		//daySummary(previousItem, currentItem);
+		/*if (!previousItem.getDateTime().toLocalDate().toString().equals(
+				currentItem.getDateTime().toLocalDate().toString())) {
+			//add message and reset count
+			summaryOutput.append(previousItem.getDateTime().toLocalDate().toString()
+					+" \t"+dayItemCount+" items within specification"+"\n");	
+			dayItemCount = 0;
+		}*/
+	}
+	
+	/**
+	 * 
+	 */
+	private void daySummary(TagDataItem previousItem, TagDataItem currentItem) {
+		//check if this is the same day as the previous item and increase the count if so
+
+		//if dates match				
 		if (!previousItem.getDateTime().toLocalDate().toString().equals(
 				currentItem.getDateTime().toLocalDate().toString())) {
 			//add message and reset count
@@ -482,7 +500,8 @@ public class TagDataProcessor {
 	 * 
 	 */
 	public void saveFile(FileOutputStream filewriter){
-		dayItemCount = -1;
+		dayItemCount = 0;
+		errhndlr.reset();
 		
 		try {
 			OutputStreamWriter writer = new OutputStreamWriter(filewriter,"UTF8");
@@ -498,14 +517,21 @@ public class TagDataProcessor {
 			long lastTimeIncluded = 0;
 
 			for (TagDataItem item : rowData){
-				if (lastItem != null){				
+				errhndlr.nextline();
+				
+				if (lastItem != null){// can't do anything with first item.		
+					
+					daySummary(lastItem, item); //reset summary if day changed.
+					//daySummary(lastItem, item); //summary if day changed.
 
 					// time between two adjacent items
 					timediff = Math.abs(item.getTimeInSeconds() - lastItem.getTimeInSeconds());
 					//System.out.println("Time Diff "+timediff);
 
 					if (item.getTimeInSeconds() < lastItem.getTimeInSeconds()){ // out of order data
-						lastTimeIncluded = item.getTimeInSeconds(); // negative
+						//lastTimeIncluded = item.getTimeInSeconds(); // negative
+						errhndlr.debug("Time order problem:"+"date "+item.date+" time "+item.time);
+
 					}
 
 					if (timediff >= minTimeDiff && timediff <= maxTimeDiff)	{
@@ -513,41 +539,59 @@ public class TagDataProcessor {
 
 						if (!lastLineIncluded){
 							writeLine(writer, lastItem);
-							//daySummary(item, lastItem);
+							
+							errhndlr.debug("Included last-line "+"(elapsed "+timediff+"):"
+									+ "date "+item.date+" time "+item.time
+									+", lat" +item.pos.lat+", lng "+item.pos.lon);	
+							
 							dayItemCount++; //need to count the item as written
 						}
 
 						writeLine(writer, item);
+						errhndlr.debug("Included "+"(elapsed "+timediff+"):"
+								+ "date "+item.date+" time "+item.time
+								+", lat" +item.pos.lat+", lng "+item.pos.lon);	
+						
 						lastLineIncluded = true;
 						lastTimeIncluded = item.getTimeInSeconds();
 						
-						daySummary(lastItem, item); 
+						dayValidItem(lastItem, item); //add valid item to summary output if day changed
 
 					} else {
 						// time between last two items is too big or small
-
-						if (Math.abs(item.getTimeInSeconds() - lastTimeIncluded) > minTimeDiff
-								&& Math.abs(item.getTimeInSeconds() - lastTimeIncluded) <= maxTimeDiff) {
-
-							//pick first item from 'busy' periods that is greater that minimum time
+						long timediffIncluded = Math.abs(item.getTimeInSeconds() - lastTimeIncluded);
+						
+						// have we reached a sample that satisfies the constraints with last included?
+						if (timediffIncluded > minTimeDiff
+								&& Math.abs(timediffIncluded) <= maxTimeDiff) {
+							
+							errhndlr.debug("Included (elapsed "+timediffIncluded+"): "+"date "+item.date+" time "+item.time);
+							
+							//pick first item from 'busy' periods that is greater than minimum time
 							writeLine(writer, item);
+							lastLineIncluded = true; //nns added 22/02/2022
 							lastTimeIncluded = item.getTimeInSeconds();
 							
-							daySummary(lastItem, item);
+							dayValidItem(lastItem, item); //add valid item to summary output if day changed
 							
-						} //else {
-
-						lastLineIncluded = false;
-						//}
+						} else { //replaced nns added 22/02/2022 was unconditional
+							errhndlr.debug("Excluded (elapsed "+timediffIncluded+"):" +"date "+item.date+" time "+item.time);
+							lastLineIncluded = false;
+						}
 					}
+					
 
 				} //if
-
+				else {
+					//if last item is null then set time for last item
+					lastTimeIncluded = item.getTimeInSeconds();
+				}
+				
 				lastItem = item; 
 			} //for	
 
 			//output last item
-			if (lastItem!= null ) {
+			if (lastItem != null ) {
 				summaryOutput.append(lastItem.getDateTime().toLocalDate().toString()
 					+" \t"+dayItemCount+" items within specification"+"\n");
 			}

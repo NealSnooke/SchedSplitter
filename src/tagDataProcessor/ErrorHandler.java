@@ -59,7 +59,7 @@ public class ErrorHandler {
 	 */
 	public void newFile(File file) {
 		currentFile = file;
-		currentLine = 0;
+		currentLine = 1;
 		totalCurrentValidlines = 0;
 		totalFiles++;
 		
@@ -168,6 +168,15 @@ public class ErrorHandler {
 		if (showDebug) {
 			write("["+currentLine+"]: "+reason);
 		}
+	}
+	
+	/**
+	 * 
+	 */
+	public void reset() {
+		currentLine = 0;
+		totalCurrentValidlines = 0;
+		totalValidlines = 0;
 	}
 
 }
