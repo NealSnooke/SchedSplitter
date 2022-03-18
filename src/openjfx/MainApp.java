@@ -17,7 +17,7 @@ import javafx.scene.control.Tab;
 // to the #element in the css file
 
 public class MainApp extends Application {
-	private static String version = "0.14";
+	private static String version = "0.17";
 
 	BorderPane settingsPane;
 	BorderPane resultsPane;
