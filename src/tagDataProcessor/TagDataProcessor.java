@@ -133,6 +133,8 @@ public class TagDataProcessor {
 		lngCol =lngc; 
 		dateCol = datec; 
 		timeCol = timec;
+		
+		getErrorHandler().message("Date/Time format: '"+dateTimeFormat+'"');
 
 		rowData = new Vector<TagDataItem>();
 		dayItemCount = 0;
@@ -238,14 +240,14 @@ public class TagDataProcessor {
 			String line = br.readLine();
 
 			while (line != null) {
-				//System.out.println("Line: "+lineCount+ " "+line);
 
 				processDataline(line, separator, zdt_s, zdt_e, timeZone);
 				
 				line = br.readLine();
 				errhndlr.nextline();
+				
 			}
-//xxx
+
 			//add the summary info for the very last date
 			if (!rowData.isEmpty()) {
 					OffsetDateTime zdt = rowData.lastElement().getDateTime();
@@ -490,8 +492,12 @@ public class TagDataProcessor {
 			writer.write(lastItem.getISOTimeFormat());
 	
 		} else {
-			writer.write(lastItem.date+", ");
-			writer.write(lastItem.time);
+			writer.write(lastItem.date);
+			
+			// add the time if the date and time were separate items in the input
+			if (!lastItem.time.isBlank()) {				
+				writer.write(", "+lastItem.time);
+			}
 		}
 		writer.write("\n");
 	}
