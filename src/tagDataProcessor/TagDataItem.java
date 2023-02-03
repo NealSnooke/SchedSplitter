@@ -86,6 +86,8 @@ public class TagDataItem {
 		if (time == null) {
 			//we have date and time as one field
 			dateTime = date;
+			// the date field will include the time in a combined situation so just set to empty string
+			this.time = "";
 		} else {
 			// join date and time into a single item before parsing
 			dateTime = date+" "+time;
